@@ -6,22 +6,6 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<div class="top-bar">
-        <a class="logo" href="">
-            <img src="img/logo.svg" />
-        </a>
-
-        <NavLink href="" class="nav-tab" Match="NavLinkMatch.All">
-            <img src="img/pizza-slice.svg" />
-            <div>Get Pizza</div>
-        </NavLink>
-
-        <NavLink href="my-orders" class="nav-tab">
-            <img src="img/bike.svg" />
-            <div>My Orders</div>
-        </NavLink>
-    </div>
-
 <div class="main">
     <div class="checkout-cols">
         <div class="checkout-order-details">
@@ -46,7 +30,7 @@
         </div>
     </div>
 
-    <button class="checkout-button btn btn-warning" >
+    <button class="checkout-button btn btn-warning" @onclick="PlaceOrder" disabled=@isSubmitting>
         Place order
     </button>
 </div>
@@ -62,6 +46,6 @@
         var response = await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "orders", OrderState.Order);
         var newOrderId = await response.Content.ReadFromJsonAsync<int>();
         OrderState.ResetOrder();
-        NavigationManager.NavigateTo("/my-orders");
+        NavigationManager.NavigateTo($"/my-orders/{newOrderId}");
     }
 }
